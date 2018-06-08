@@ -12,5 +12,4 @@
     - { role: docker, docker_user: "{{ desktop_user }}" }
     - java_project_builder
     - intellij_community
-    - sublime_workstation
     - docker_compose
