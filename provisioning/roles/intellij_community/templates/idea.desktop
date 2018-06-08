@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=IntelliJ IDEA
+Icon=/opt/{{intellij_idea_directory_name}}/bin/idea.png
+Exec="/opt/{{intellij_idea_directory_name}}/bin/idea.sh" %f
+Comment=The Drive to Develop
+Categories=Development;IDE;
+Terminal=false
+StartupWMClass=jetbrains-idea

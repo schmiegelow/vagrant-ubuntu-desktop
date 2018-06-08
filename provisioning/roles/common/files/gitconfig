@@ -1,0 +1,8 @@
+[core]
+	editor = vim
+[alias]
+	st = status
+[push]
+	default = simple
+[pull]
+	rebase = true

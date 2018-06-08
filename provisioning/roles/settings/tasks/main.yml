@@ -1,0 +1,14 @@
+---
+- name: Check that maven settings.xml exists
+  stat:
+    path: /home/vagrant/.m2/settings.xml
+  register: stat_result
+- name: ensure maven settings installed
+  template:
+    dest: /home/vagrant/.m2/settings.xml
+    force: yes
+    group: vagrant
+    mode: 0644
+    owner: vagrant
+    src: settings.xml.j2
+  when: stat_result.stat.exists == False

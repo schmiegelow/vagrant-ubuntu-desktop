@@ -1,0 +1,33 @@
+---
+- name: ensure docker compose directory exists
+  file:
+    group: root
+    mode: 0755
+    owner: root
+    path: "{{ docker_compose_directory }}"
+    state: directory
+- name: ensure docker compose installed
+  get_url:
+    dest: "{{ docker_compose_executable_path }}"
+    group: root
+    mode: 0777
+    owner: root
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64"
+- name: ensure docker compose on path
+  file:
+    group: root
+    owner: root
+    path: "{{ local_software_directory }}/docker-compose"
+    src: "{{ docker_compose_executable_path }}"
+    state: link
+- name: ensure local development services routing configured
+  lineinfile:
+    insertafter: "EOF"
+    line: "127.0.0.1 {{ item }}"
+    dest: "/etc/hosts"
+  with_items: "{{ local_hostnames }}"
+- name: ensure maximum number of memory map areas per process is high enough to run elasticsearch
+  sysctl:
+    name: vm.max_map_count
+    state: present
+    value: 262144

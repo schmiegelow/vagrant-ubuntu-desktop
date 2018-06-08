@@ -1,0 +1,16 @@
+---
+- hosts: all
+  vars:
+    additional_software_directory: /opt
+    local_software_directory: /usr/local/bin
+  roles:
+    - virtualbox
+    - common
+    - swapfile
+    - slack
+    - aws_api_client
+    - { role: docker, docker_user: "{{ desktop_user }}" }
+    - java_project_builder
+    - intellij_community
+    - sublime_workstation
+    - docker_compose

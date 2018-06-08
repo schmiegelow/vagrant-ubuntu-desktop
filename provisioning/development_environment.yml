@@ -1,0 +1,3 @@
+---
+- include: development_environment_template.yml
+- hosts: all

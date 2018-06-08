@@ -1,0 +1,105 @@
+---
+- name: ensure latest version of terminator installed
+  package:
+    name: terminator
+    state: latest
+- name: ensure keyboard is set to english (uk)
+  gsetting:
+    user: "{{ desktop_user }}"
+    key: org.gnome.desktop.input-sources.sources
+    value: "{{ \"[('xkb', '%s%s')]\" | format(keyboard_layout, '+' + keyboard_variant if (keyboard_variant) else '') | string }}"
+- name: ensure keyboard is set to english (uk), keymap
+  command: "localectl set-keymap gb"
+- name: ensure keyboard is set to english (uk), x11 keymap
+  command: "localectl set-x11-keymap gb"
+- name: ensure jq installed
+  package:
+    name: jq
+    state: latest
+- name: configure keyboard shortcuts
+  gsetting:
+    user: "{{ desktop_user }}"
+    key: "{{ item.0.schema }}.{{ item.1.name }}"
+    value: "{{ item.1.value | default(\"[]\") }}"
+  with_subelements:
+  - "{{ keyboard_shortcuts }}"
+  - keys
+- name: ensure google chrome apt key installed
+  apt_key:
+    url: https://dl.google.com/linux/linux_signing_key.pub
+    state: present
+- name: ensure google chrome apt repository installed
+  apt_repository:
+    filename: google-chrome
+    repo: deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main
+    state: present
+    update_cache: yes
+- name: ensure google chrome installed
+  package:
+    name: google-chrome-stable
+    state: latest
+- name: ensure google launcher icon configured
+  copy:
+    dest: /usr/share/applications/google-chrome.desktop
+    force: yes
+    group: root
+    mode: 0644
+    owner: root
+    src: google-chrome.desktop
+- name: ensure system locale settings configured
+  lineinfile:
+    create: yes
+    dest: "/etc/default/locale"
+    group: root
+    line: "{{ item.name }}=\"{{ item.value }}\""
+    mode: 0644
+    owner: root
+    regexp: "^{{ item.name }}="
+    state: present
+  with_items: "{{ locale_settings }}"
+- name: ensure user session locale settings configured
+  lineinfile:
+    create: yes
+    dest: "/var/lib/AccountsService/users/{{ desktop_user }}"
+    group: root
+    insertafter: '^\[User\]'
+    line: "{{ item.name }}={{ item.value }}"
+    mode: 0644
+    owner: root
+    regexp: "^{{ item.name }}="
+    state: present
+  with_items:
+    - { name: 'Language', value: "{{ locale }}" }
+    - { name: 'FormatsLocale', value: "{{ locale_and_character_set }}" }
+- name: ensure keepassx installed
+  package:
+    name: keepassx
+    state: latest
+- name: ensure tree installed
+  package:
+    name: tree
+    state: latest
+- name: ensure fabric installed
+  package:
+    name: fabric
+    state: latest
+- name: ensure inotify-tools installed
+  package:
+    name: inotify-tools
+    state: latest
+- name: ensure latest version of pgcli installed
+  package:
+    name: pgcli
+    state: latest
+- name: ensure latest version of pgadmin3 installed
+  package:
+    name: pgadmin3
+    state: latest
+- name: ensure latest version of git-gui installed
+  package:
+    name: git-gui
+    state: latest
+- name: ensure latest version of bash-completion installed
+  package:
+    name: bash-completion
+    state: latest

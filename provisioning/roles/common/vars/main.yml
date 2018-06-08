@@ -1,0 +1,47 @@
+---
+keyboard_layout: gb
+keyboard_variant:
+keyboard_shortcuts:
+  - schema: org.gnome.desktop.wm.keybindings
+    keys:
+      - name: move-to-monitor-left
+      - name: move-to-monitor-right
+      - name: move-to-monitor-up
+      - name: move-to-monitor-down
+      - name: move-to-workspace-1
+      - name: move-to-workspace-left
+      - name: move-to-workspace-right
+      - name: move-to-workspace-up
+      - name: move-to-workspace-down
+      - name: move-to-workspace-last
+      - name: switch-to-workspace-left
+      - name: switch-to-workspace-right
+      - name: switch-to-workspace-up
+      - name: switch-to-workspace-down
+      - name: switch-to-workspace-last
+      - name: toggle-shaded
+      - name: begin-move
+      - name: begin-resize
+  - schema: org.gnome.settings-daemon.plugins.media-keys
+    keys:
+      - name: screenreader
+      - name: screensaver
+        value: <Super>l
+language: en
+country: GB
+character_set: UTF-8
+locale: "{{ language }}_{{ country }}"
+locale_preferences: "{{ locale }}:{{ language }}"
+locale_and_character_set: "{{ locale }}.{{ character_set }}"
+locale_settings:
+  - { name: 'LANGUAGE', value: "{{ locale_preferences }}" }
+  - { name: 'LANG', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_NUMERIC', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_TIME', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_MONETARY', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_PAPER', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_NAME', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_ADDRESS', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_TELEPHONE', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_MEASUREMENT', value: "{{ locale_and_character_set }}" }
+  - { name: 'LC_IDENTIFICATION', value: "{{ locale_and_character_set }}" }

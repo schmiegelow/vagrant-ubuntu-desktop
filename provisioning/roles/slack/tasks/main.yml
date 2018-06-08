@@ -1,0 +1,12 @@
+---
+- name: download and install slack deb package
+  apt:
+    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-amd64.deb
+- name: ensure slack launcher icon configured
+  template:
+    dest: /usr/share/applications/slack.desktop
+    force: yes
+    group: root
+    mode: 0644
+    owner: root
+    src: slack.desktop

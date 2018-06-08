@@ -1,0 +1,3 @@
+---
+desktop_user: vagrant
+desktop_user_home: "/home/{{desktop_user}}"

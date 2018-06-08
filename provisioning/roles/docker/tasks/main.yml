@@ -1,0 +1,33 @@
+---
+- name: look up ubuntu version codename
+  shell: "lsb_release -cs"
+  register: ubuntu_codename
+  changed_when: False
+- name: ensure docker's apt key is installed
+  apt_key:
+    state: present
+    url: https://download.docker.com/linux/ubuntu/gpg
+- name: ensure docker's apt repository is installed
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ubuntu_codename.stdout }} stable"
+    state: present
+    update-cache: yes
+- name: select docker over ubuntu docker
+  command: apt-cache policy docker-ce
+- name: update apt-update_cache
+  apt:
+    update_cache: yes
+- name: ensure docker installed
+  package:
+    name: docker.io
+    state: latest
+- name: ensure docker group exists
+  group:
+    name: docker
+    state: present
+- name: ensure docker user is in docker group
+  user:
+    append: yes
+    groups: docker
+    name: "{{ docker_user }}"
+    state: present

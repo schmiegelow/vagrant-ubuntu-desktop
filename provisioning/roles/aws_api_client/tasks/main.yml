@@ -1,0 +1,21 @@
+---
+- name: ensure python is installed
+  package:
+    name: python
+    state: latest
+- name: ensure pip installed
+  package:
+    name: python-pip
+    state: latest
+- name: ensure pip is up to date
+  pip:
+    name: pip
+    state: latest
+- name: ensure aws cli installed
+  pip:
+    name: awscli
+    state: latest
+- name: ensure python aws sdk installed
+  pip:
+    name: boto3
+    state: latest

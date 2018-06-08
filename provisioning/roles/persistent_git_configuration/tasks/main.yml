@@ -1,0 +1,8 @@
+---
+- name: ensure git global configuration exists in persistent directory
+  file:
+    group: "{{ desktop_user }}"
+    mode: 0664
+    owner: "{{ desktop_user }}"
+    path: "{{ persistent_directory_path }}/config"
+    state: touch

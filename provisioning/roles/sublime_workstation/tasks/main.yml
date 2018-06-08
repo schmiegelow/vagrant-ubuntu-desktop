@@ -1,0 +1,41 @@
+---
+- name: ensure sublime text package repository is installed
+  apt_repository:
+    repo: ppa:webupd8team/sublime-text-3
+    state: present
+    update-cache: yes
+- name: ensure sublime text is installed
+  package:
+    name: sublime-text-installer
+    state: latest
+- name: ensure sublime text installed packages directory exists
+  file:
+    group: "{{ desktop_user }}"
+    mode: 0700
+    owner: "{{ desktop_user }}"
+    path: "{{ sublime_text_installed_packages_directory }}"
+    state: directory
+- name: ensure sublime text user package configuration directory exists
+  file:
+    group: "{{ desktop_user }}"
+    mode: 0700
+    owner: "{{ desktop_user }}"
+    path: "{{ sublime_text_user_package_configuration_directory }}"
+    state: directory
+- name: ensure sublime package control is installed
+  get_url:
+    checksum: "sha256:{{ sublime_text_package_control_sha256_checksum }}"
+    dest: "{{ sublime_text_installed_packages_directory }}"
+    force: no
+    group: "{{ desktop_user }}"
+    mode: 0664
+    owner: "{{ desktop_user }}"
+    url: 'https://packagecontrol.io/Package Control.sublime-package'
+- name: ensure sublime packages are installed
+  copy:
+    dest: "{{ sublime_text_user_package_configuration_directory }}"
+    force: yes
+    group: "{{ desktop_user }}"
+    mode: 0664
+    owner: "{{ desktop_user }}"
+    src: 'Package Control.sublime-settings'

@@ -1,0 +1,7 @@
+---
+docker_compose_version: 1.19.0
+docker_compose_directory: "{{ additional_software_directory }}/docker-compose/{{ docker_compose_version }}"
+docker_compose_executable_path: "{{docker_compose_directory}}/docker-compose"
+local_hostnames:
+  - 'logstash.internal-service'
+  - 'kibana.internal-service'

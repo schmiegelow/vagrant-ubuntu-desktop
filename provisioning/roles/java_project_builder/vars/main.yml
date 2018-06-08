@@ -1,0 +1,6 @@
+---
+openjdk_8_apt_version_prefix: "8u151-b12-0ubuntu0."
+openjdk_8_apt_version_suffix: ".2"
+gradle_version: 3.5
+gradle_directory_path: "{{ additional_software_directory }}/gradle"
+gradle_executable_path: "{{ gradle_directory_path }}/gradle-{{ gradle_version }}/bin/gradle"

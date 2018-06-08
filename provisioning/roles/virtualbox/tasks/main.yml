@@ -1,0 +1,9 @@
+---
+- name: ensure virtualbox-dkms is installed
+  package:
+    name: virtualbox-dkms
+    state: latest
+- name: ensure virtualbox-guest-dkms installed
+  package:
+    name: virtualbox-guest-dkms
+    state: latest

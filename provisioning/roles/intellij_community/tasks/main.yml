@@ -1,0 +1,67 @@
+---
+- name: ensure intellij idea installed
+  unarchive:
+    creates: "{{ additional_software_directory }}/{{intellij_idea_directory_name}}"
+    dest: "{{ additional_software_directory }}"
+    group: root
+    mode: 0755
+    owner: root
+    remote_src: yes
+    src: https://download.jetbrains.com/idea/ideaIC-{{intellij_idea_major_version}}.{{intellij_idea_minor_version}}{{'.' ~ intellij_idea_patch_version if intellij_idea_patch_version != None else ''}}.tar.gz
+- name: ensure intellij idea launcher icon configured
+  template:
+    dest: /usr/share/applications/jetbrains-idea.desktop
+    force: yes
+    group: root
+    mode: 0644
+    owner: root
+    src: idea.desktop
+- name: ensure intellij idea configured
+  synchronize:
+    archive: yes
+    dest: "{{intellij_idea_user_directory}}"
+    src: config
+  become_user: "{{ desktop_user }}"
+- name: ensure intellij idea plugins directory exists
+  file:
+    group: "{{ desktop_user }}"
+    mode: 0755
+    owner: "{{ desktop_user }}"
+    path: "{{intellij_idea_user_directory}}/config/plugins"
+    state: directory
+- name: ensure temporary directory exists for downloading intellij idea plugins
+  command: 'mktemp -d'
+  register: idea_plugin_download_directory
+  changed_when: False
+- name: ensure temporary directory for downloading intellij idea plugins is owned by desktop user
+  file:
+    group: "{{ desktop_user }}"
+    path: "{{ idea_plugin_download_directory.stdout }}"
+    owner: "{{ desktop_user }}"
+  changed_when: False
+- name: download missing intellij idea plugins
+  unarchive:
+    creates: "{{intellij_idea_user_directory}}/config/plugins/{{ item.name }}-{{ item.updateId }}"
+    dest: "{{ idea_plugin_download_directory.stdout }}"
+    group: "{{ desktop_user }}"
+    mode: 0755
+    owner: "{{ desktop_user }}"
+    remote_src: yes
+    src: "https://plugins.jetbrains.com/plugin/download?pr=idea&updateId={{ item.updateId }}"
+  register: idea_plugin_download
+  with_items: "{{ intellij_idea_plugins }}"
+- set_fact:
+    pending_idea_plugins: "{{ idea_plugin_download.results | reject('skipped') | map(attribute='item') | list }}"
+- name: ensure old versions of intellij idea plugins are removed
+  command: "find '{{intellij_idea_user_directory}}/config/plugins' -maxdepth 1 -name '{{ item.name }}-*' -exec rm -r {} \\;"
+  with_items: "{{ pending_idea_plugins }}"
+- name: ensure intellij idea plugins are installed
+  synchronize:
+    dest: "{{intellij_idea_user_directory}}/config/plugins/{{ item.name }}-{{ item.updateId }}"
+    src: "{{ idea_plugin_download_directory.stdout }}/{{ item.name }}/"
+  with_items: "{{ pending_idea_plugins }}"
+- name: ensure inotify watch limit is high enough to run intellij
+  sysctl:
+    name: fs.inotify.max_user_watches
+    state: present
+    value: 524288

@@ -1,0 +1,5 @@
+swapfile_dependencies:
+  - util-linux
+swapfile_file: /swap
+swapfile_size: 2G
+swapfile_swappiness: 10

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Slack
+Icon=/usr/lib/slack/resources/app.asar.unpacked/src/static/slack.png
+Exec="/usr/bin/slack" %f
+Comment=Slack Instant Messanger
+Categories=Network;InstantMessaging;
+Terminal=false

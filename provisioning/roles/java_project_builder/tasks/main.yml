@@ -1,0 +1,32 @@
+---
+- name: ensure OpenJDK 8 JDK is installed
+  package:
+    name: "openjdk-8-jdk"
+    state: present
+- name: ensure gradle executable directory exists
+  file:
+    group: root
+    mode: 0755
+    owner: root
+    path: "{{ gradle_directory_path }}"
+    state: directory
+- name: ensure gradle installed
+  unarchive:
+    creates: "{{ gradle_executable_path }}"
+    dest: "{{ gradle_directory_path }}"
+    group: root
+    mode: 0755
+    owner: root
+    remote_src: yes
+    src: "https://services.gradle.org/distributions/gradle-{{ gradle_version }}-bin.zip"
+- name: ensure gradle on path
+  file:
+    group: root
+    owner: root
+    path: "{{ local_software_directory }}/gradle"
+    src: "{{ gradle_executable_path }}"
+    state: link
+- name: ensure maven is installed
+  package:
+    name: maven
+    state: latest
