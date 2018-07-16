@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_check_update = true
   config.disksize.size = "32GB"
   config.vm.provider "virtualbox" do |v|
-        v.memory = 8128
+        v.memory = 4096
         v.cpus = 2
         v.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
         v.customize ["modifyvm", :id, "--usb", "on"]
