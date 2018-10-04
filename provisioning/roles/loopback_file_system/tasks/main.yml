@@ -1,0 +1,44 @@
+---
+- name: create persistent file
+  command: "./create_persistent_filesystem.sh {{ loopback_device_file }} {{ desktop_user }} {{ initial_kilobytes }}"
+  args:
+    creates: "{{ loopback_device_file }}"
+  register: device_file_created
+- name: check if loopback device exists
+  command: "./loopback_device_exists.sh {{ index }} {{ loopback_device_file }}"
+  register: loopback_device_exists
+  failed_when: False
+  changed_when: False
+- name: mount persistent file as loopback device
+  command: "./create_loopback_device.sh {{ index }} {{ loopback_device_file }}"
+  when: loopback_device_exists.rc == 1
+- name: format loopback device
+  command: "mkfs -t ext4 {{ loopback_device_path }}"
+  when: device_file_created.changed
+  changed_when: False
+- name: retrieve loopback device label
+  command: "e2label {{ loopback_device_path }}"
+  register: loopback_device_current_label
+  changed_when: False
+- name: label loopback device
+  command: "e2label {{ loopback_device_path }} {{ loopback_device_label }}"
+  when: loopback_device_current_label.stdout != loopback_device_label
+- name: ensure loopback device mounted
+  mount:
+    name: "{{ mount_point }}"
+    src: "{{ loopback_device_path }}"
+    opts: defaults,nofail
+    state: mounted
+    fstype: auto
+  ignore_errors: yes
+- name: check persistent file used space
+  command: "./get_directory_percent_used.sh {{ mount_point }}"
+  register: persistent_file_percentage_used_space
+  changed_when: False
+- name: ensure persistent file has enough free space
+  command: "./double_loopback_device_size.sh {{ index }} {{ loopback_device_file }}"
+  when: (persistent_file_percentage_used_space.stdout | int) > 75
+- name: Set permissions
+  command: "chown {{ desktop_user }}:{{ desktop_user }} {{ mount_point }}"
+- name: check and fix permissions when necessary
+  command: find "{{ mount_point }}" -type f ! -user {{ desktop_user }} -exec chown {{ desktop_user }}:{{ desktop_user }} {} \;

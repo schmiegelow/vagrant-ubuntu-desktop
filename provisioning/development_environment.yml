@@ -1,3 +1,8 @@
 ---
 - include: development_environment_template.yml
 - hosts: all
+  roles:
+    - { role: loopback_file_system, index: 0, mount_point: "{{ desktop_user_home }}/dev", initial_kilobytes: 1024000 }
+    - { role: loopback_file_system, index: 1, mount_point: "{{ desktop_user_home }}/.config/git", initial_kilobytes: 100 }
+    - { role: loopback_file_system, index: 2, mount_point: "{{ desktop_user_home }}/.aws", initial_kilobytes: 100 }
+    - { role: loopback_file_system, index: 3, mount_point: "{{ desktop_user_home }}/.m2", initial_kilobytes: 512000 }

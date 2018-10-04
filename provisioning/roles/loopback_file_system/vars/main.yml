@@ -1,0 +1,4 @@
+---
+loopback_device_path: "/dev/loop{{ index }}"
+loopback_device_label: "{{ mount_point | basename }}"
+loopback_device_file: "/vagrant/persistent-data/{{ mount_point | replace('/', '-') }}"
