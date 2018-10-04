@@ -1,9 +1,5 @@
 ---
-- name: ensure virtualbox-dkms is installed
+- name: ensure virtualbox-guest-additions installed
   package:
-    name: virtualbox-dkms
-    state: latest
-- name: ensure virtualbox-guest-dkms installed
-  package:
-    name: virtualbox-guest-dkms
+    name: virtualbox-guest-additions-iso
     state: latest

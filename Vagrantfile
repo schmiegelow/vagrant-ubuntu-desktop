@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
   config.vm.box_check_update = true
   config.disksize.size = "32GB"
   config.vm.provider "virtualbox" do |v|
-        v.memory = 8128
+        v.memory = 4096
         v.cpus = 2
         v.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
         v.customize ["modifyvm", :id, "--usb", "on"]
@@ -43,9 +43,6 @@ Vagrant.configure("2") do |config|
   	sudo apt-get install -y python-setuptools python-dev build-essential
   	sudo apt-get install -y python-pip
   	sudo pip install ansible
-  	sudo apt-get install virtualbox-guest-additions-iso
-  	sudo apt install build-essential dkms
-  	sudo apt-get install build-essential linux-headers-$(uname -r)
 
     DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" dist-upgrade -y
 
