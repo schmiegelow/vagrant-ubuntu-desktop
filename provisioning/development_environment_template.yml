@@ -7,7 +7,6 @@
     - virtualbox
     - common
     - swapfile
-    - slack
     - aws_api_client
     - { role: docker, docker_user: "{{ desktop_user }}" }
     - java_project_builder
