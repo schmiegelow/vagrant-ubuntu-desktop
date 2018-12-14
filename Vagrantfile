@@ -1,3 +1,5 @@
+ssh_key_name = 'devvm'
+
 Vagrant.configure("2") do |config|
   required_plugins = %w( vagrant-vbguest vagrant-disksize vagrant-hostmanager )
       _retry = false
@@ -27,8 +29,21 @@ Vagrant.configure("2") do |config|
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.synced_folder "persistent-data", "/vagrant/persistent-data"
   config.vm.synced_folder "provisioning", "/vagrant/provisioning"
+
+  if Vagrant::Util::Platform.windows? then
+    config.vm.provision "file", source: "#{ENV['HOME']}\\.ssh\\#{ssh_key_name}", destination: "/tmp/#{ssh_key_name}", run: "always"
+    config.vm.provision "file", source: "#{ENV['HOME']}\\.ssh\\#{ssh_key_name}.pub", destination: "/tmp/#{ssh_key_name}.pub", run: "always"
+  else
+    config.vm.provision "file", source: "#{ENV['HOME']}//.ssh//#{ssh_key_name}", destination: "/tmp/#{ssh_key_name}", run: "always"
+    config.vm.provision "file", source: "#{ENV['HOME']}//.ssh//#{ssh_key_name}.pub", destination: "/tmp/#{ssh_key_name}.pub", run: "always"
+  end
+
+
   config.vm.provision "shell", run: "always", inline: <<-SHELL
     set -o errexit -o pipefail -o nounset
+
+    mv /tmp/#{ssh_key_name}* /home/vagrant/.ssh
+    chmod 0400 /home/vagrant/.ssh/#{ssh_key_name}
 
     apt-get update
     DEBIAN_FRONTEND=noninteractive apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confnew" dist-upgrade -y
