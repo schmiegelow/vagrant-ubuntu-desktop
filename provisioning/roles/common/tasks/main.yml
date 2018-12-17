@@ -3,7 +3,7 @@
   package:
     name: terminator
     state: latest
- name: ensure keyboard is set to english (uk), keymap
+- name: ensure keyboard is set to english (uk), keymap
   command: "localectl set-keymap gb"
 - name: ensure keyboard is set to english (uk), x11 keymap
   command: "localectl set-x11-keymap gb"

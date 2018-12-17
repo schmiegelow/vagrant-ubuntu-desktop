@@ -247,6 +247,7 @@ function Start-Virtual-Machine {
 
 Ensure-Chocolately-Installed
 Ensure-Chocolately-Package-Installed 'git'
+Ensure-Chocolately-Package-Installed 'gzip'
 Ensure-Chocolately-Package-Installed 'vagrant'
 Ensure-Chocolately-Package-Installed 'openssh'
 if (Current-Identity-Is-Non-Admin-Role) {
