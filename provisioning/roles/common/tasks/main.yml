@@ -3,12 +3,7 @@
   package:
     name: terminator
     state: latest
-- name: ensure keyboard is set to english (uk)
-  gsetting:
-    user: "{{ desktop_user }}"
-    key: org.gnome.desktop.input-sources.sources
-    value: "{{ \"[('xkb', '%s%s')]\" | format(keyboard_layout, '+' + keyboard_variant if (keyboard_variant) else '') | string }}"
-- name: ensure keyboard is set to english (uk), keymap
+ name: ensure keyboard is set to english (uk), keymap
   command: "localectl set-keymap gb"
 - name: ensure keyboard is set to english (uk), x11 keymap
   command: "localectl set-x11-keymap gb"
