@@ -11,14 +11,6 @@
   package:
     name: jq
     state: latest
-- name: configure keyboard shortcuts
-  gsetting:
-    user: "{{ desktop_user }}"
-    key: "{{ item.0.schema }}.{{ item.1.name }}"
-    value: "{{ item.1.value | default(\"[]\") }}"
-  with_subelements:
-  - "{{ keyboard_shortcuts }}"
-  - keys
 - name: ensure google chrome apt key installed
   apt_key:
     url: https://dl.google.com/linux/linux_signing_key.pub
