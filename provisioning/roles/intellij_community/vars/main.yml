@@ -1,8 +1,8 @@
 ---
 intellij_idea_build_number: 181.5087.20
 intellij_idea_major_version: 2018
-intellij_idea_minor_version: 1
-intellij_idea_patch_version: 4 
+intellij_idea_minor_version: 3
+intellij_idea_patch_version: 1 
 intellij_idea_directory_name: "idea-IC-{{intellij_idea_build_number}}"
 intellij_idea_user_directory: "/home/{{desktop_user}}/.IdeaIC{{intellij_idea_major_version}}.{{intellij_idea_minor_version}}"
 intellij_idea_plugins:
