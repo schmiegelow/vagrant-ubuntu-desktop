@@ -90,3 +90,11 @@
   package:
     name: bash-completion
     state: latest
+- name: ensure pip is up to date
+  pip:
+    name: pip
+    state: latest
+- name: ensure invoke installed
+  pip:
+    name: invoke
+    state: latest    
